@@ -27,46 +27,66 @@ class TaskResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-        ->schema([
-            TextInput::make('title') 
-                ->required()
-                ->maxLength(255),
-                Textarea::make('description') 
-                ->required(),
-            DateTimePicker::make('finished_at'),
-            CheckboxColumn::make('done')
-                 ->toggleable(),
-        ]);
+            ->schema([
+                Forms\Components\TextInput::make('title'),
+                Forms\Components\Textarea::make('description'),
+                Forms\Components\Select::make('user_id') // Define the user relationship
+                    ->relationship('user', 'name'), // Relationship to user, displayed by user name
+            ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('title'),
-                // TextColumn::make('user'),
-                TextColumn::make('finished_at'),
-                CheckboxColumn::make('done'),
-            ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Columns\TextColumn::make('title'),
+                Tables\Columns\TextColumn::make('user.name') // Display the associated user's name
+                    ->label('User'),
             ]);
     }
+    // public static function form(Form $form): Form
+    // {
+    //     return $form
+    //     ->schema([
+    //         TextInput::make('title') 
+    //             ->required()
+    //             ->maxLength(255),
+    //             Textarea::make('description') 
+    //             ->required(),
+    //         DateTimePicker::make('finished_at'),
+    //         CheckboxColumn::make('done')
+    //              ->toggleable(),
+    //     ]);
+    // }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
+    // public static function table(Table $table): Table
+    // {
+    //     return $table
+    //         ->columns([
+    //             TextColumn::make('title'),
+    //             // TextColumn::make('user'),
+    //             TextColumn::make('finished_at'),
+    //             CheckboxColumn::make('done'),
+    //         ])
+    //         ->filters([
+    //             //
+    //         ])
+    //         ->actions([
+    //             Tables\Actions\EditAction::make(),
+    //         ])
+    //         ->bulkActions([
+    //             Tables\Actions\BulkActionGroup::make([
+    //                 Tables\Actions\DeleteBulkAction::make(),
+    //             ]),
+    //         ]);
+    // }
+
+    // public static function getRelations(): array
+    // {
+    //     return [
+    //         //
+    //     ];
+    // }
 
     public static function getPages(): array
     {
