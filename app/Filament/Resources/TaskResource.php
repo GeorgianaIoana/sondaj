@@ -30,8 +30,8 @@ class TaskResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('title'),
                 Forms\Components\Textarea::make('description'),
-                Forms\Components\Select::make('user_id') // Define the user relationship
-                    ->relationship('user', 'name'), // Relationship to user, displayed by user name
+                Forms\Components\Select::make('user_id') 
+                    ->relationship('user', 'name'),
             ]);
     }
 
@@ -40,7 +40,7 @@ class TaskResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title'),
-                Tables\Columns\TextColumn::make('user.name') // Display the associated user's name
+                Tables\Columns\TextColumn::make('user.name')
                     ->label('User'),
             ]);
     }
