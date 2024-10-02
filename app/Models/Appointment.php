@@ -10,14 +10,18 @@ class Appointment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id',
         'date',
         'status',
         'notes',
+        "user_id"
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
+    protected $casts = [
+        'date' => 'date', 
+    ];
 }

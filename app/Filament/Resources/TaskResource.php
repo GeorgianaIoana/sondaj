@@ -44,49 +44,7 @@ class TaskResource extends Resource
                     ->label('User'),
             ]);
     }
-    // public static function form(Form $form): Form
-    // {
-    //     return $form
-    //     ->schema([
-    //         TextInput::make('title') 
-    //             ->required()
-    //             ->maxLength(255),
-    //             Textarea::make('description') 
-    //             ->required(),
-    //         DateTimePicker::make('finished_at'),
-    //         CheckboxColumn::make('done')
-    //              ->toggleable(),
-    //     ]);
-    // }
 
-    // public static function table(Table $table): Table
-    // {
-    //     return $table
-    //         ->columns([
-    //             TextColumn::make('title'),
-    //             // TextColumn::make('user'),
-    //             TextColumn::make('finished_at'),
-    //             CheckboxColumn::make('done'),
-    //         ])
-    //         ->filters([
-    //             //
-    //         ])
-    //         ->actions([
-    //             Tables\Actions\EditAction::make(),
-    //         ])
-    //         ->bulkActions([
-    //             Tables\Actions\BulkActionGroup::make([
-    //                 Tables\Actions\DeleteBulkAction::make(),
-    //             ]),
-    //         ]);
-    // }
-
-    // public static function getRelations(): array
-    // {
-    //     return [
-    //         //
-    //     ];
-    // }
 
     public static function getPages(): array
     {

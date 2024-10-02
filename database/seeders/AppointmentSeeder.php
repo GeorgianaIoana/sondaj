@@ -1,21 +1,22 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Seeders;
 
 use App\Models\Appointment;
-use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Seeder;
 
-class AppointmentFactory extends Factory
+class AppointmentSeeder extends Seeder
 {
-    protected $model = Appointment::class;
-
-    public function definition()
+    public function run(): void
     {
-        return [
-            'user_id' => \App\Models\User::factory(),
-            'date' => $this->faker->dateTimeBetween('now', '+1 month'),
-            'status' => $this->faker->randomElement(['pending', 'confirmed', 'cancelled']), 
-            'notes' => $this->faker->sentence(),
-        ];
+       
+        Appointment::factory(10)->create();
+
+        Appointment::factory()->create([
+            'status' => 'Specific Task Title',   
+            'users' => 'users_id',
+            'notes' => 'This is a specific task description',  
+            'date' => now()->addDays(3), 
+        ]);
     }
 }

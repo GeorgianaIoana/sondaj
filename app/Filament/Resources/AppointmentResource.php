@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\AppointmentResource\Pages;
 use App\Filament\Resources\AppointmentResource\RelationManagers;
 use App\Models\Appointment;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -12,25 +13,25 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class AppointmentResource extends Resource
 {
     protected static ?string $model = Appointment::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-s-pencil-square';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
                 Forms\Components\DateTimePicker::make('date')
                     ->required(),
-                Forms\Components\TextInput::make('status')
+                Forms\Components\Select::make('user_id')
+                    ->relationship('user', 'name') 
+                    ->required(),
+                Forms\Components\Toggle::make('status')
                     ->required()
-                    ->maxLength(255)
                     ->default('pending'),
                 Forms\Components\Textarea::make('notes')
                     ->columnSpanFull(),
@@ -41,13 +42,12 @@ class AppointmentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('date')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('status')
+                    Tables\Columns\TextColumn::make('user.name')
+                    ->sortable(),
+                Tables\Columns\ToggleColumn::make('status')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -68,16 +68,23 @@ class AppointmentResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->modifyQueryUsing(function (Builder $query) {
+                // Obține utilizatorul autentificat
+                /** @var User */
+                $user_id = Auth::id();
+
+                // Filtrează programările pentru utilizatorul autentificat
+                return $query->where('user_id', $user_id);
+                
+
+                // În cazul în care utilizatorul nu este autentificat, nu returnăm nimic
+                return $query->whereNull('user_id');
+            });
+    
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
+  
     public static function getPages(): array
     {
         return [
@@ -86,4 +93,10 @@ class AppointmentResource extends Resource
             'edit' => Pages\EditAppointment::route('/{record}/edit'),
         ];
     }
+
+    public static function canViewAny(): bool
+    {
+        return true;  // Ensure this returns true for visibility
+    }
+
 }

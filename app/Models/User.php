@@ -25,6 +25,7 @@ class User extends Authenticatable
         'city',
         'status',
         'image',
+        'role',
     ];
 
     protected $hidden = [
@@ -44,6 +45,11 @@ class User extends Authenticatable
     public function tasks()
     {
         return $this->hasMany(Task::class);
+    }
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
     }
 
     protected $casts = [

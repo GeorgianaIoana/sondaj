@@ -18,6 +18,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\FontProviders\GoogleFontProvider;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -29,11 +30,15 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::Indigo,
-                'gray' => Color::Pink,
-                'info' => Color::Blue,
-                'success' => Color::Yellow,
+                'primary' => '#a6b6e0',
+                'gray' => '#233d36',
+                'info' => '#badad5',
+                'success' => '#badad5',
+                'warning' => '#badad5',
             ])
+            ->favicon(asset('images/purple-crown.png'))
+            ->brandName('THE SQUARE')
+            ->font('Archivo Black', provider: GoogleFontProvider::class)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -57,6 +62,6 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ]);    
     }
 }
