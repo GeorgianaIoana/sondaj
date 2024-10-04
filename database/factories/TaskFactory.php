@@ -2,8 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\Task;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Task;
+use App\Models\User;
 
 class TaskFactory extends Factory
 {
@@ -12,9 +13,10 @@ class TaskFactory extends Factory
     public function definition(): array
     {
         return [
+            'user_id' => User::inRandomOrder()->first()->id,
             'title' => $this->faker->sentence(),  
             'description' => $this->faker->paragraph(),  
-            'finished_at' => $this->faker->dateTimeBetween('-1 week', '+1 week'), 
+            'finished_at' => now()->addDays(3), 
             'done' => $this->faker->boolean(),
         ];
     }

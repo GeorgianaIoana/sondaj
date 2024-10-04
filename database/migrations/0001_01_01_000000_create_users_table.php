@@ -25,8 +25,6 @@ return new class extends Migration
             $table->integer('status');
             $table->string('image');
             $table->string('role')->default('user');
-
-
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

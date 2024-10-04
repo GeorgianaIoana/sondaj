@@ -5,19 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Task extends Model
+class Payment extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'user_id',
-        'title',
-        'description',
-        'finished_at',
+        'pay_day',
+        'paid',
+        "invoice",
+        "payment_date",
     ];
 
     protected $casts = [
-        'finished_at' => 'datetime',
+        'payment_date' => 'date', 
     ];
 
     public function user()

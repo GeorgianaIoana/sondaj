@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\CheckboxColumn;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Support\Facades\Auth;
 
 class TaskResource extends Resource
 {
@@ -42,7 +43,20 @@ class TaskResource extends Resource
                 Tables\Columns\TextColumn::make('title'),
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('User'),
-            ]);
+            ])
+            ->modifyQueryUsing(function (Builder $query) {
+
+                /** @var User */
+                $authUser = Auth::user();
+
+                if ($authUser->role == 'admin') {
+                    return $query;
+                }
+
+                if ($authUser->role == 'user') {
+                    return $query->where('user_id', $authUser->id);
+                }
+            });
     }
 
 

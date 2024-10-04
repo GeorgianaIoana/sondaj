@@ -10,15 +10,19 @@ return new class extends Migration
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+
+            $table->unsignedBigInteger('user_id')->nullable();
+
             $table->dateTime('date');
-            $table->string('status')->default('pending'); 
+            $table->string('status')->default('pending');
             $table->text('notes')->nullable();
-            $table->timestamps(); 
+            $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
         });
     }
 
-    
+
     public function down(): void
     {
         Schema::dropIfExists('appointments');

@@ -6,27 +6,32 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        Schema::create('tasks', function (Blueprint $table) {
+        Schema::create('payments', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger('user_id')->nullable();
 
-            $table->string('title');
-            $table->longText('description')->nullable();
-            $table->dateTime('finished_at', precision: 0)->nullable();
-            $table->boolean('done')->default(false);
+            $table->string('pay_day');
+            $table->boolean('paid');
+            $table->string('invoice');
+            $table->date('payment_date');
+            $table->timestamps();
+          
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
-
-            $table->timestamps();
         });
     }
 
-
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::dropIfExists('tasks');
+        Schema::dropIfExists('payments');
     }
 };

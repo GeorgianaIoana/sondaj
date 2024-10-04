@@ -2,8 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\Appointment;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Appointment;
+use App\Models\User;
 
 class AppointmentFactory extends Factory
 {
@@ -12,7 +13,8 @@ class AppointmentFactory extends Factory
     public function definition()
     {
         return [
-            'date' => $this->faker->dateTimeBetween('now', '+1 month'),
+            'user_id' => User::inRandomOrder()->first()->id,
+            'date' => now()->addDays(3), 
             'status' => $this->faker->randomElement(['pending', 'confirmed', 'cancelled']), 
             'notes' => $this->faker->sentence(), 
         ];

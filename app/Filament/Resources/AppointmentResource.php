@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\AppointmentResource\Pages;
-use App\Filament\Resources\AppointmentResource\RelationManagers;
 use App\Models\Appointment;
 use App\Models\User;
 use Filament\Forms;
@@ -12,7 +11,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 
 class AppointmentResource extends Resource
@@ -70,20 +68,19 @@ class AppointmentResource extends Resource
                 ]),
             ])
             ->modifyQueryUsing(function (Builder $query) {
-                // Obține utilizatorul autentificat
+
                 /** @var User */
-                $user_id = Auth::id();
+                $authUser = Auth::user();
 
-                // Filtrează programările pentru utilizatorul autentificat
-                return $query->where('user_id', $user_id);
-                
+                if ($authUser->role == 'admin') {
+                    return $query;
+                }
 
-                // În cazul în care utilizatorul nu este autentificat, nu returnăm nimic
-                return $query->whereNull('user_id');
+                if ($authUser->role == 'user') {
+                    return $query->where('user_id', $authUser->id);
+                }
             });
-    
     }
-
   
     public static function getPages(): array
     {
