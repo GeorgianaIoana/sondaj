@@ -2,3 +2,6 @@
 !private/
 !public/
 !.gitignore
+
+!export_appointments.csv
+!import_appointments.csv

@@ -29,26 +29,27 @@ class PaymentResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $options = [];
-        for ($i = 1; $i <= 31; $i++) {
-            $options[$i] = $i;
-        }
-
         return $form
+
             ->schema([
                 TextInput::make('user.name')
                     ->label('User Name')
                     ->required(),
-                Select::make('pay_day')
-                    ->label('Pay Day')
-                    ->options($options)
+
+                TextInput::make('pay_day')
+                    ->label('Payment reccuring day')
+                    ->max(30)
+                    ->min(1)
                     ->required(),
+
                 Toggle::make('paid')
                     ->label('Paid')
                     ->required(),
+
                 FileUpload::make('invoice')
                     ->label('Invoice Upload')
                     ->required(),
+
                 DatePicker::make('payment_date')
                     ->label('Payment Date'),
             ]);
@@ -63,7 +64,6 @@ class PaymentResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('pay_day')
                     ->label('Pay Day')
-                    ->dateTime()
                     ->sortable(),
                 Tables\Columns\ToggleColumn::make('paid')
                     ->label('Paid')
@@ -97,11 +97,6 @@ class PaymentResource extends Resource
                     return $query->where('user_id', $authUser->id);
                 }
             });
-    }
-
-    public static function canViewAny(): bool
-    {
-        return true;
     }
 
     public static function getPages(): array
