@@ -14,6 +14,10 @@ class ListUsers extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+            Actions\Action::make('see_api_users')
+                ->action(function () {
+                    return redirect()->route('api.users');
+                })
         ];
     }
 }
