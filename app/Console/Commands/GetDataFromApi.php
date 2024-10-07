@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Http;
 
 class GetDataFromApi extends Command
 {
@@ -25,6 +26,11 @@ class GetDataFromApi extends Command
      */
     public function handle()
     {
-        //
+        $response = Http::get('https://sondaj.test/admin/users', [
+
+            'email' => 'test@gmail.com',
+        ]);
+
+        dd($response);
     }
 }

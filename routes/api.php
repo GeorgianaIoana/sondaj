@@ -16,3 +16,5 @@ Route::get('/user', function (Request $request) {
 Route::get('/users', function () {
     return UserResource::collection(User::all());
 })->name('api.users');
+
+

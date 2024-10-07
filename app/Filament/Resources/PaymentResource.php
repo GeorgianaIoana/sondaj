@@ -29,30 +29,37 @@ class PaymentResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
+        
+        $paymentDays = [];
+        for ($i = 1; $i <= 30; $i++) {
+            $paymentDays[$i] = (string)$i; 
+        }
 
-            ->schema([
-                TextInput::make('user.name')
-                    ->label('User Name')
-                    ->required(),
+        return $form->schema([
+            TextInput::make('user.name')
+                ->label('User Name')
+                ->required()
+                ->searchable(),
 
-                TextInput::make('pay_day')
-                    ->label('Payment reccuring day')
-                    ->max(30)
-                    ->min(1)
-                    ->required(),
+            Select::make('pay_day') 
+                ->label('Payment recurring day')
+                ->options($paymentDays)
+                ->required()
+                ->searchable(),
 
-                Toggle::make('paid')
-                    ->label('Paid')
-                    ->required(),
+            Toggle::make('paid')
+                ->label('Paid')
+                ->required()
+                ->searchable(),
 
-                FileUpload::make('invoice')
-                    ->label('Invoice Upload')
-                    ->required(),
+            FileUpload::make('invoice')
+                ->label('Invoice Upload')
+                ->required(),
 
-                DatePicker::make('payment_date')
-                    ->label('Payment Date'),
-            ]);
+            DatePicker::make('payment_date')
+                ->label('Payment Date')
+                ->searchable(),
+        ]);
     }
 
     public static function table(Table $table): Table
@@ -61,9 +68,11 @@ class PaymentResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('User Name')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('pay_day')
                     ->label('Pay Day')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\ToggleColumn::make('paid')
                     ->label('Paid')
@@ -73,6 +82,7 @@ class PaymentResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('payment_date')
                     ->label('Payment Date')
+                    ->searchable()
                     ->sortable(),
             ])
             ->filters([
@@ -85,7 +95,6 @@ class PaymentResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ])
             ->modifyQueryUsing(function (Builder $query) {
-
                 /** @var User */
                 $authUser = Auth::user();
 

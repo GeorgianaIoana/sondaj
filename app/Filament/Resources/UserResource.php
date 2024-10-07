@@ -35,7 +35,8 @@ class UserResource extends Resource
                 Select::make('id')
                     ->label('Id Select')
                     ->options($options)
-                    ->required(),
+                    ->required()
+                    ->searchable(),
                 TextInput::make('name')->required(),
                 TextInput::make('email')->required()->autocomplete('off'),
                 TextInput::make('password')

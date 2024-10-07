@@ -40,9 +40,11 @@ class TaskResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title'),
+                Tables\Columns\TextColumn::make('title')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('user.name')
-                    ->label('User'),
+                    ->label('User')
+                    ->searchable(),
             ])
             ->modifyQueryUsing(function (Builder $query) {
 

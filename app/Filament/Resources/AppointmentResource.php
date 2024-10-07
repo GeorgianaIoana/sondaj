@@ -42,8 +42,10 @@ class AppointmentResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('date')
                     ->dateTime()
+                    ->searchable()
                     ->sortable(),
                     Tables\Columns\TextColumn::make('user.name')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\ToggleColumn::make('status')
                     ->searchable(),
@@ -93,7 +95,7 @@ class AppointmentResource extends Resource
 
     public static function canViewAny(): bool
     {
-        return true;  // Ensure this returns true for visibility
+        return true;  
     }
 
 }
